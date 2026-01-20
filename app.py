@@ -1,13 +1,13 @@
 """
-AskQL - AI-Powered Analytics Platform
-Main Streamlit Application Entry Point
+AskQL - Natural Language Database Query Tool
+Streamlit web application
 
-Production-grade natural language to SQL query system with:
-- Multi-tenant authentication
-- Schema-aware SQL generation via Gemini
-- Comprehensive SQL validation
-- Interactive visualizations
-- AI-generated insights
+Features:
+- User authentication
+- Natural language to SQL conversion using Gemini
+- Query validation and execution
+- Data visualization
+- Query insights
 """
 
 import streamlit as st
@@ -88,6 +88,7 @@ def show_login_page():
         st.markdown("---")
         st.caption("🔒 Secure multi-tenant authentication")
         st.caption("💡 Demo credentials available in database setup")
+        st.caption("🤖 Developed by Atharva | Powered by Google Gemini & Neon PostgreSQL")
 
 
 def show_sidebar():

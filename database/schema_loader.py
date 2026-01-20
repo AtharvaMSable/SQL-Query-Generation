@@ -1,7 +1,4 @@
-"""
-Schema Loader Module
-Dynamically loads and introspects database schemas for authorized datasets.
-"""
+"""Database schema loading and metadata extraction"""
 
 from typing import List, Dict, Optional
 from sqlalchemy import text, inspect

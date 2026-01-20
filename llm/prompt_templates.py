@@ -1,7 +1,4 @@
-"""
-Prompt Templates for LLM
-Contains carefully engineered prompts for SQL generation.
-"""
+"""Prompts for SQL generation using LLM"""
 
 from typing import Dict
 import logging
@@ -10,10 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class PromptTemplates:
-    """
-    Centralized prompt templates for different LLM tasks.
-    Uses advanced prompt engineering techniques for reliable SQL generation.
-    """
+    """Prompts for converting natural language to SQL"""
     
     @staticmethod
     def get_sql_generation_prompt(
@@ -22,20 +16,9 @@ class PromptTemplates:
         dataset_name: str,
         user_role: str = "analyst"
     ) -> str:
-        """
-        Generate a comprehensive prompt for SQL generation.
-        
-        Args:
-            question: User's natural language question
-            schema_context: Formatted database schema information
-            dataset_name: Name of the dataset being queried
-            user_role: User's role (for context)
-        
-        Returns:
-            Complete prompt string for the LLM
-        """
-        prompt = f"""You are an expert PostgreSQL query generator for a business analytics platform.
-Your task is to convert natural language questions into safe, efficient SQL queries.
+        """Create prompt for SQL generation"""
+        prompt = f"""You are a PostgreSQL query generator.
+Your task is to convert natural language questions into SQL queries.
 
 CONTEXT:
 - Dataset: {dataset_name}
@@ -82,19 +65,8 @@ Return ONLY the raw SQL query, nothing else.
         results_summary: str,
         row_count: int
     ) -> str:
-        """
-        Generate prompt for creating business insights from query results.
-        
-        Args:
-            question: Original user question
-            sql_query: SQL query that was executed
-            results_summary: Summary of the results (top rows, statistics)
-            row_count: Number of rows returned
-        
-        Returns:
-            Prompt for insight generation
-        """
-        prompt = f"""You are a business analytics expert providing insights from data.
+        """Create prompt for generating insights from query results"""
+        prompt = f"""Generate a brief insight from this data query.
 
 USER QUESTION:
 {question}
@@ -107,14 +79,12 @@ RESULTS SUMMARY:
 Total rows: {row_count}
 
 TASK:
-Generate a concise, business-friendly insight (2-3 sentences) that:
-1. Directly answers the user's question
-2. Highlights key findings or trends
-3. Provides actionable takeaways if applicable
-4. Uses specific numbers from the results
-5. Is written for non-technical business users
+Generate 2-3 sentences that:
+1. Answer the user's question
+2. Highlight key findings
+3. Include specific numbers from results
 
-Generate the insight now:
+Generate the insight:
 """
         return prompt
     
@@ -125,19 +95,8 @@ Generate the insight now:
         error_message: str,
         schema_context: str
     ) -> str:
-        """
-        Generate prompt for fixing a failed SQL query.
-        
-        Args:
-            original_question: User's question
-            original_sql: SQL that failed
-            error_message: Error from database
-            schema_context: Schema information
-        
-        Returns:
-            Prompt for query refinement
-        """
-        prompt = f"""You are a PostgreSQL expert fixing a failed query.
+        """Create prompt for fixing failed SQL queries"""
+        prompt = f"""Fix this SQL query.
 
 ORIGINAL QUESTION:
 {original_question}
@@ -152,13 +111,9 @@ DATABASE SCHEMA:
 {schema_context}
 
 TASK:
-Analyze the error and generate a corrected SQL query that:
-1. Fixes the specific error mentioned
-2. Still answers the original question
-3. Follows all PostgreSQL syntax rules
-4. Is a valid SELECT query
+Fix the error and return a working SELECT query.
 
-Return ONLY the corrected SQL query, nothing else.
+Return ONLY the corrected SQL query.
 """
         return prompt
     
@@ -168,18 +123,8 @@ Return ONLY the corrected SQL query, nothing else.
         columns: list,
         sample_data: str
     ) -> str:
-        """
-        Generate prompt for recommending chart type.
-        
-        Args:
-            question: User's question
-            columns: List of column names in results
-            sample_data: Sample of the data
-        
-        Returns:
-            Prompt for chart recommendation
-        """
-        prompt = f"""You are a data visualization expert.
+        """Create prompt for chart type recommendation"""
+        prompt = f"""Recommend a chart type for this data.
 
 USER QUESTION:
 {question}
@@ -190,39 +135,29 @@ RESULT COLUMNS:
 SAMPLE DATA:
 {sample_data}
 
-TASK:
-Recommend the most appropriate chart type from these options:
-- bar (for categorical comparisons)
-- line (for time series or trends)
-- pie (for part-to-whole relationships, max 10 categories)
-- scatter (for correlation between two numeric variables)
-- table (when visualization doesn't add value)
+Chart options:
+- bar (categorical comparisons)
+- line (time series or trends)
+- pie (part-to-whole, max 10 categories)
+- scatter (correlation between numeric values)
+- table (no visualization needed)
 
-Respond with ONLY ONE WORD: the chart type name (lowercase).
+Respond with ONE WORD: the chart type (lowercase).
 """
         return prompt
     
     @staticmethod
     def create_system_prompt() -> str:
-        """
-        Create a consistent system prompt for all interactions.
-        
-        Returns:
-            System prompt string
-        """
-        return """You are AskQL Assistant, an expert AI system specialized in:
-1. Converting natural language to SQL (PostgreSQL)
-2. Analyzing data and generating business insights
-3. Ensuring query safety and data security
+        """System prompt for LLM interactions"""
+        return """You are AskQL Assistant. You convert natural language to PostgreSQL queries.
 
-You ALWAYS:
-- Generate syntactically correct SQL
-- Follow security best practices
-- Provide concise, accurate responses
-- Think step-by-step for complex queries
-- Validate your output before responding
+Guidelines:
+- Generate correct SQL syntax
+- Follow security practices
+- Give concise responses
+- Validate output
 
-You NEVER:
+Never:
 - Generate destructive queries (DELETE, UPDATE, DROP, etc.)
 - Include explanatory text when only SQL is requested
 - Make assumptions about missing schema information

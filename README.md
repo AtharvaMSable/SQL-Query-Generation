@@ -1,10 +1,10 @@
-# AskQL - AI-Powered Analytics Platform
+# AskQL - Natural Language Database Query Tool
 
-A production-grade natural language query and analytics platform powered by Google Gemini and Neon PostgreSQL.
+Query your PostgreSQL database using plain English, powered by Google Gemini AI.
 
-## 🎯 Overview
+## Overview
 
-AskQL enables non-technical users to query databases using plain English. The system intelligently converts natural language questions into safe SQL, executes them on secure multi-tenant PostgreSQL databases, and presents results with interactive visualizations and AI-generated insights.
+AskQL lets you ask questions in normal language and automatically converts them to SQL. It handles authentication, validates queries for safety, and shows results with charts.
 
 ## 🏗️ Architecture
 
@@ -215,7 +215,7 @@ Proprietary - All Rights Reserved
 
 ## 👥 Contributors
 
-Built by Senior AI Platform Engineers
+Developed by Atharva
 
 ---
 

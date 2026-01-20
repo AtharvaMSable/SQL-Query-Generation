@@ -1,10 +1,10 @@
-# 🎯 AskQL - Production-Grade AI Analytics Platform
+# AskQL - Natural Language Database Query Platform
 
-## Executive Summary
+## Project Summary
 
-AskQL is a production-ready, enterprise-grade natural language analytics platform that enables non-technical users to query databases using plain English. Built with modern best practices, it combines Google Gemini AI, Neon PostgreSQL, and Streamlit to deliver a secure, scalable, and intuitive data analysis experience.
+AskQL is a web application that lets you query databases using plain English. Built with Streamlit, Google Gemini, and Neon PostgreSQL.
 
-## 🏗️ Architecture Overview
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -407,7 +407,7 @@ This project demonstrates:
 
 ---
 
-**Built by:** Senior AI Platform Engineers  
+**Developed by:** Atharva  
 **Tech Stack:** Python, Streamlit, PostgreSQL, Google Gemini, Plotly  
 **Version:** 1.0.0  
 **License:** Proprietary  
