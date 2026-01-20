@@ -1,223 +1,94 @@
 # AskQL - Natural Language Database Query Tool
 
-Query your PostgreSQL database using plain English, powered by Google Gemini AI.
+Query PostgreSQL databases using plain English, powered by Google Gemini AI.
 
-## Overview
+## What It Does
 
-AskQL lets you ask questions in normal language and automatically converts them to SQL. It handles authentication, validates queries for safety, and shows results with charts.
+Type questions in normal language and get SQL queries automatically generated, validated, and executed with visual results.
 
-## 🏗️ Architecture
+## Quick Start
 
-```
-┌─────────────────┐
-│   Streamlit UI  │
-└────────┬────────┘
-         │
-    ┌────┴────┐
-    │  Auth   │
-    └────┬────┘
-         │
-┌────────┴────────────┐
-│  Natural Language   │
-│     Question        │
-└────────┬────────────┘
-         │
-    ┌────┴─────┐
-    │  Gemini  │ ──► SQL Generation
-    │   LLM    │
-    └────┬─────┘
-         │
-    ┌────┴─────┐
-    │   SQL    │ ──► Validation
-    │ Validator│
-    └────┬─────┘
-         │
-    ┌────┴─────┐
-    │   Neon   │ ──► Query Execution
-    │PostgreSQL│
-    └────┬─────┘
-         │
-    ┌────┴─────┐
-    │Analytics │ ──► Charts + Insights
-    │  Engine  │
-    └──────────┘
-```
+1. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## 📁 Project Structure
+2. **Configure environment**
+   ```bash
+   # Create .env file with your credentials
+   NEON_DB_URL=postgresql://user:pass@host/db?sslmode=require
+   GEMINI_API_KEY=your_api_key
+   ```
+
+3. **Setup database**
+   ```bash
+   # Run sql/init_schema.sql in Neon SQL Editor
+   ```
+
+4. **Run app**
+   ```bash
+   streamlit run app.py
+   ```
+
+5. **Login**
+   - Username: analyst1
+   - Password: demo123
+
+## Features
+
+- User authentication
+- Natural language to SQL conversion
+- Query validation (prevents harmful queries)
+- Interactive charts (Plotly)
+- AI-generated insights
+- Query history
+
+## Project Structure
 
 ```
 AskQL/
-├── app.py                      # Streamlit entry point
-├── requirements.txt            # Python dependencies
-├── .env.example               # Environment variables template
-├── README.md                  # This file
-│
-├── auth/                      # Authentication & Authorization
-│   ├── __init__.py
-│   ├── session_manager.py    # Session state handling
-│   └── user_auth.py          # Login & user management
-│
-├── config/                    # Configuration Management
-│   ├── __init__.py
-│   ├── settings.py           # App settings & constants
-│   └── database_config.py    # Neon DB connection config
-│
-├── database/                  # Database Layer
-│   ├── __init__.py
-│   ├── connection.py         # SQLAlchemy engine & connection
-│   ├── schema_loader.py      # Dynamic schema introspection
-│   ├── query_executor.py     # Safe query execution
-│   └── validators.py         # SQL safety validation
-│
-├── llm/                       # AI/LLM Integration
-│   ├── __init__.py
-│   ├── gemini_client.py      # Gemini API client
-│   └── prompt_templates.py   # Prompt engineering
-│
-├── analytics/                 # Analytics & Visualization
-│   ├── __init__.py
-│   ├── chart_generator.py    # Plotly chart creation
-│   └── insight_generator.py  # AI-powered insights
-│
-├── utils/                     # Utilities
-│   ├── __init__.py
-│   ├── logger.py             # Logging configuration
-│   └── helpers.py            # Helper functions
-│
-└── sql/                       # Database Setup Scripts
-    └── init_schema.sql       # Sample schema & data
+├── app.py              # Main app
+├── auth/               # Login & sessions
+├── config/             # Settings
+├── database/           # DB operations
+├── llm/                # Gemini integration
+├── analytics/          # Charts & insights
+└── utils/              # Helpers
 ```
 
-## 🚀 Setup Instructions
+## Tech Stack
 
-### 1. Clone & Navigate
-```bash
-cd f:\PAT\AskQL
+- Frontend: Streamlit
+- Database: Neon PostgreSQL
+- AI: Google Gemini
+- Charts: Plotly
+- ORM: SQLAlchemy
+
+## Security
+
+- SQL injection prevention
+- SELECT-only queries
+- Row-level access control
+- Session timeouts
+- Query validation
+
+## Example
+
+**Question:** "Show top 5 products by revenue"
+
+**Generated SQL:**
+```sql
+SELECT product_name, SUM(revenue) as total
+FROM sales_data.sales s
+JOIN sales_data.products p ON s.product_id = p.product_id
+GROUP BY product_name
+ORDER BY total DESC
+LIMIT 5
 ```
 
-### 2. Create Virtual Environment
-```bash
-python -m venv venv
-venv\Scripts\activate  # Windows
-```
+**Result:** Bar chart + AI insight
 
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Configure Environment
-```bash
-copy .env.example .env
-# Edit .env with your Neon DB credentials and Gemini API key
-```
-
-### 5. Initialize Database
-```bash
-# Run the SQL schema initialization script on your Neon database
-# Use Neon SQL Editor or psql:
-psql -h your-neon-host.neon.tech -U your_username -d your_database -f sql/init_schema.sql
-```
-
-### 6. Run Application
-```bash
-streamlit run app.py
-```
-
-## 🔐 Security Features
-
-- **Multi-tenant isolation**: Row-level security via user-dataset mapping
-- **SQL injection prevention**: Strict SQL validation & sanitization
-- **Read-only queries**: Only SELECT statements allowed
-- **Row limiting**: Automatic LIMIT enforcement
-- **Session management**: Secure session state with timeout
-- **Schema isolation**: Users only see authorized datasets
-
-## 🎨 Key Features
-
-### 1. Natural Language Processing
-- Convert business questions to SQL using Gemini
-- Context-aware prompt engineering
-- Schema-aware query generation
-
-### 2. Smart Visualizations
-- Auto-detect chart types (line, bar, pie, scatter)
-- Interactive Plotly charts
-- Time-series analysis
-
-### 3. AI Insights
-- Automated result interpretation
-- Trend detection
-- Business-friendly summaries
-
-### 4. User Experience
-- Intuitive Streamlit interface
-- Session-based query history
-- Collapsible SQL preview
-- Dataset switcher
-
-## 📊 Usage Example
-
-**User Question:** "What were our top 5 products by revenue last quarter?"
-
-**System Actions:**
-1. Validates user has access to sales dataset
-2. Loads product & sales schema
-3. Generates SQL:
-   ```sql
-   SELECT product_name, SUM(revenue) as total_revenue
-   FROM sales
-   WHERE order_date >= '2025-10-01' AND order_date < '2026-01-01'
-   GROUP BY product_name
-   ORDER BY total_revenue DESC
-   LIMIT 5
-   ```
-4. Executes query safely
-5. Displays bar chart
-6. Generates insight: "Widget Pro led Q4 sales with $1.2M revenue, up 23% from Q3"
-
-## 🛠️ Technology Stack
-
-| Component | Technology |
-|-----------|-----------|
-| Frontend | Streamlit |
-| Backend | Python 3.11+ |
-| Database | Neon PostgreSQL |
-| ORM | SQLAlchemy |
-| AI Model | Google Gemini |
-| Visualization | Plotly |
-| Data Processing | Pandas |
-
-## 📈 Scalability Considerations
-
-- Connection pooling for concurrent users
-- Query result caching
-- Async query execution for large datasets
-- Rate limiting on LLM API calls
-- Horizontal scaling with Streamlit Cloud/K8s
-
-## 🧪 Testing
-
-```bash
-# Run tests (to be implemented)
-pytest tests/
-
-# Linting
-flake8 .
-
-# Type checking
-mypy .
-```
-
-## 📝 License
-
-Proprietary - All Rights Reserved
-
-## 👥 Contributors
+## Author
 
 Developed by Atharva
 
----
-
-**Version:** 1.0.0  
-**Last Updated:** January 2026

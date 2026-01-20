@@ -1,4 +1,7 @@
-"""User authentication and database login"""
+"""
+User Authentication Module
+Handles user login validation and user information retrieval from Neon PostgreSQL.
+"""
 
 import hashlib
 import logging
